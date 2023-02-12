@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UsersMiddleware } from './users.middleware';
@@ -9,6 +9,13 @@ import { UsersMiddleware } from './users.middleware';
 })
 export class UsersModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(UsersMiddleware).forRoutes('users');
+    consumer.apply(UsersMiddleware).forRoutes({
+      path: 'users',
+      method: RequestMethod.GET,
+    },
+    {
+      path: 'users/:id',
+      method: RequestMethod.GET,
+    });
   }
 }
